@@ -83,11 +83,18 @@ export function App() {
 
   const addTransaction = async (transaction: Omit<Transaction, 'id'>) => {
     try {
-      await addDoc(collection(db, 'transactions'), transaction);
+      if (!user) return;
+
+      await addDoc(collection(db, 'transactions'), {
+        ...transaction,
+        userId: user.uid,
+        createdAt: new Date().toISOString()
+      });
+
       setActiveTab('historico');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erro ao adicionar transação:", error);
-      alert("Erro ao salvar no banco de dados.");
+      alert(`Erro ao salvar no banco de dados: ${error.message || 'Erro desconhecido'}`);
     }
   };
 
