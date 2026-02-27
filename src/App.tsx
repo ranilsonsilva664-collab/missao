@@ -20,6 +20,21 @@ export function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'nova' | 'historico' | 'configuracoes'>('dashboard');
   const [loading, setLoading] = useState(true);
 
+  // Calcular totais
+  const totals = useMemo(() => {
+    return transactions.reduce((acc, t) => {
+      const valor = Number(t.valor) || 0;
+      if (t.tipo === 'entrada') {
+        acc.entradas += valor;
+        acc.saldo += valor;
+      } else {
+        acc.saidas += valor;
+        acc.saldo -= valor;
+      }
+      return acc;
+    }, { entradas: 0, saidas: 0, saldo: 0 });
+  }, [transactions]);
+
   // Carregar transações do Firestore em tempo real
   useEffect(() => {
     const q = query(collection(db, 'transactions'), orderBy('data', 'desc'));
@@ -102,8 +117,8 @@ export function App() {
             <button
               onClick={() => setActiveTab('dashboard')}
               className={`px-6 py-4 font-medium transition-all ${activeTab === 'dashboard'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-600 hover:text-blue-600'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-600 hover:text-blue-600'
                 }`}
             >
               📊 Dashboard
@@ -111,8 +126,8 @@ export function App() {
             <button
               onClick={() => setActiveTab('nova')}
               className={`px-6 py-4 font-medium transition-all ${activeTab === 'nova'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-600 hover:text-blue-600'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-600 hover:text-blue-600'
                 }`}
             >
               ➕ Nova Transação
@@ -120,8 +135,8 @@ export function App() {
             <button
               onClick={() => setActiveTab('historico')}
               className={`px-6 py-4 font-medium transition-all ${activeTab === 'historico'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-600 hover:text-blue-600'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-600 hover:text-blue-600'
                 }`}
             >
               📋 Histórico
@@ -129,8 +144,8 @@ export function App() {
             <button
               onClick={() => setActiveTab('configuracoes')}
               className={`px-6 py-4 font-medium transition-all ${activeTab === 'configuracoes'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-600 hover:text-blue-600'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-600 hover:text-blue-600'
                 }`}
             >
               ⚙️ Configurações
