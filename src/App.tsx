@@ -4,7 +4,9 @@ import { Dashboard } from './components/Dashboard';
 import { TransactionForm } from './components/TransactionForm';
 import { TransactionList } from './components/TransactionList';
 import Settings from './components/Settings';
-import { db } from './lib/firebase';
+import { Login } from './components/Login';
+import { db, auth } from './lib/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
 import {
   collection,
   addDoc,
@@ -16,9 +18,21 @@ import {
 } from 'firebase/firestore';
 
 export function App() {
+  const [user, setUser] = useState<User | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'nova' | 'historico' | 'configuracoes'>('dashboard');
   const [loading, setLoading] = useState(true);
+
+  // Monitorar estado de autenticação
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      if (!user) {
+        setLoading(false);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Calcular totais
   const totals = useMemo(() => {
@@ -37,6 +51,8 @@ export function App() {
 
   // Carregar transações do Firestore em tempo real
   useEffect(() => {
+    if (!user) return;
+
     const q = query(collection(db, 'transactions'), orderBy('data', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const docs = snapshot.docs.map(doc => ({
@@ -48,7 +64,22 @@ export function App() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-gray-600 font-medium">Carregando sistema...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Login />;
+  }
 
   const addTransaction = async (transaction: Omit<Transaction, 'id'>) => {
     try {

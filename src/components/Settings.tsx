@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+import { auth } from '../lib/firebase';
+import { signOut } from 'firebase/auth';
 
 interface SettingsProps {
   onImport: (data: any[]) => void;
@@ -15,14 +17,14 @@ const Settings: React.FC<SettingsProps> = ({ onImport }) => {
 
     const exportData = Array.isArray(transactions)
       ? transactions.map((t: any) => ({
-          id: t.id,
-          type: t.tipo,
-          category: t.categoria,
-          amount: t.valor,
-          description: t.descricao,
-          date: t.data,
-          responsible: t.responsavel,
-        }))
+        id: t.id,
+        type: t.tipo,
+        category: t.categoria,
+        amount: t.valor,
+        description: t.descricao,
+        date: t.data,
+        responsible: t.responsavel,
+      }))
       : [];
 
     const dataStr = JSON.stringify(exportData, null, 2);
@@ -67,7 +69,7 @@ const Settings: React.FC<SettingsProps> = ({ onImport }) => {
 
         alert(
           '✅ PDF salvo como comprovante no sistema. Ele não cria lançamentos automáticos; ' +
-            'use-o apenas como anexo/arquivo de consulta.'
+          'use-o apenas como anexo/arquivo de consulta.'
         );
       } catch (error) {
         alert('❌ Erro ao salvar o PDF.');
@@ -177,6 +179,37 @@ const Settings: React.FC<SettingsProps> = ({ onImport }) => {
           O PDF será salvo como <strong>comprovante/anexo</strong> no navegador. Ele não cria
           lançamentos automaticamente.
         </p>
+      </div>
+
+      {/* Sair do Sistema */}
+      <div className="bg-white rounded-xl shadow-md p-6 border border-red-100">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
+            <svg
+              className="w-6 h-6 text-red-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800">Sair do Sistema</h2>
+            <p className="text-sm text-gray-500">Encerra sua sessão atual com segurança</p>
+          </div>
+        </div>
+        <button
+          onClick={() => signOut(auth)}
+          className="w-full bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+        >
+          Sair da Conta
+        </button>
       </div>
 
       {/* Informações */}
