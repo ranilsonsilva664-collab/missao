@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { auth } from '../lib/firebase';
 import { signOut } from 'firebase/auth';
 
@@ -9,7 +9,7 @@ interface SettingsProps {
 const STORAGE_KEY_TRANSACTIONS = 'church-transactions';
 const STORAGE_KEY_PDFS = 'church-pdf-attachments';
 
-const Settings: React.FC<SettingsProps> = ({ onImport }) => {
+const Settings: React.FC<SettingsProps> = () => {
   // Exportar dados para arquivo JSON (formato compatível com importação)
   const handleExport = () => {
     const stored = localStorage.getItem(STORAGE_KEY_TRANSACTIONS);
@@ -86,16 +86,16 @@ const Settings: React.FC<SettingsProps> = ({ onImport }) => {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Título */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">⚙️ Configurações</h1>
-        <p className="text-gray-600">Gerencie seus dados, backups e anexos</p>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2 transition-colors">⚙️ Configurações</h1>
+        <p className="text-gray-600 dark:text-gray-400">Gerencie seus dados, backups e anexos</p>
       </div>
 
       {/* Exportar Dados */}
-      <div className="bg-white rounded-xl shadow-md p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-colors">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+          <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
             <svg
-              className="w-6 h-6 text-blue-600"
+              className="w-6 h-6 text-blue-600 dark:text-blue-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -109,8 +109,8 @@ const Settings: React.FC<SettingsProps> = ({ onImport }) => {
             </svg>
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-gray-800">Exportar Dados</h2>
-            <p className="text-sm text-gray-500">Baixe um backup de todos os registros</p>
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Exportar Dados</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Baixe um backup de todos os registros</p>
           </div>
         </div>
         <button
@@ -130,11 +130,11 @@ const Settings: React.FC<SettingsProps> = ({ onImport }) => {
       </div>
 
       {/* Importar PDF (comprovantes) */}
-      <div className="bg-white rounded-xl shadow-md p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-colors">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+          <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
             <svg
-              className="w-6 h-6 text-orange-600"
+              className="w-6 h-6 text-orange-600 dark:text-orange-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -148,8 +148,8 @@ const Settings: React.FC<SettingsProps> = ({ onImport }) => {
             </svg>
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-gray-800">Importar PDF</h2>
-            <p className="text-sm text-gray-500">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Importar PDF</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Anexe comprovantes em PDF aos registros da tesouraria
             </p>
           </div>
@@ -175,18 +175,18 @@ const Settings: React.FC<SettingsProps> = ({ onImport }) => {
           </svg>
           Selecionar Arquivo PDF
         </label>
-        <p className="text-xs text-gray-500 mt-2 text-center">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
           O PDF será salvo como <strong>comprovante/anexo</strong> no navegador. Ele não cria
           lançamentos automaticamente.
         </p>
       </div>
 
       {/* Sair do Sistema */}
-      <div className="bg-white rounded-xl shadow-md p-6 border border-red-100">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-red-100 dark:border-red-900/30 transition-colors">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
+          <div className="w-12 h-12 bg-red-50 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
             <svg
-              className="w-6 h-6 text-red-600"
+              className="w-6 h-6 text-red-600 dark:text-red-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -200,22 +200,22 @@ const Settings: React.FC<SettingsProps> = ({ onImport }) => {
             </svg>
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-gray-800">Sair do Sistema</h2>
-            <p className="text-sm text-gray-500">Encerra sua sessão atual com segurança</p>
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Sair do Sistema</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Encerra sua sessão atual com segurança</p>
           </div>
         </div>
         <button
           onClick={() => signOut(auth)}
-          className="w-full bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+          className="w-full bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
         >
           Sair da Conta
         </button>
       </div>
 
       {/* Informações */}
-      <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
-        <h3 className="font-semibold text-blue-800 mb-3">📋 Como usar:</h3>
-        <ul className="text-sm text-blue-700 space-y-2">
+      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-900/30">
+        <h3 className="font-semibold text-blue-800 dark:text-blue-300 mb-3">📋 Como usar:</h3>
+        <ul className="text-sm text-blue-700 dark:text-blue-400 space-y-2">
           <li>
             ✅ <strong>Exportar:</strong> crie backups regularmente para não perder seus dados
           </li>

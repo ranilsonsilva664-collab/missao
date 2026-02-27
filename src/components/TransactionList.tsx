@@ -19,7 +19,7 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
 
   const filteredTransactions = transactions.filter((t) => {
     const matchesFilter = filter === 'todos' || t.tipo === filter;
-    const matchesSearch = 
+    const matchesSearch =
       t.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
       t.categoria.toLowerCase().includes(searchTerm.toLowerCase()) ||
       t.responsavel.toLowerCase().includes(searchTerm.toLowerCase());
@@ -34,9 +34,9 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <div className="bg-white rounded-xl shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Histórico de Transações</h2>
-        
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-colors">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Histórico de Transações</h2>
+
         {/* Filtros */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="flex-1">
@@ -45,37 +45,34 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
               placeholder="Pesquisar por descrição, categoria ou responsável..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
             />
           </div>
           <div className="flex justify-center md:justify-end gap-2 w-full md:w-auto">
             <button
               onClick={() => setFilter('todos')}
-              className={`px-4 py-3 rounded-lg font-medium transition-all ${
-                filter === 'todos'
+              className={`px-4 py-3 rounded-lg font-medium transition-all ${filter === 'todos'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }`}
             >
               Todos
             </button>
             <button
               onClick={() => setFilter('entrada')}
-              className={`px-4 py-3 rounded-lg font-medium transition-all ${
-                filter === 'entrada'
+              className={`px-4 py-3 rounded-lg font-medium transition-all ${filter === 'entrada'
                   ? 'bg-green-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }`}
             >
               Entradas
             </button>
             <button
               onClick={() => setFilter('saida')}
-              className={`px-4 py-3 rounded-lg font-medium transition-all ${
-                filter === 'saida'
+              className={`px-4 py-3 rounded-lg font-medium transition-all ${filter === 'saida'
                   ? 'bg-red-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                }`}
             >
               Saídas
             </button>
@@ -85,14 +82,14 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
         {/* Lista de Transações */}
         {filteredTransactions.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">Nenhuma transação encontrada</p>
+            <p className="text-gray-500 dark:text-gray-400 text-lg">Nenhuma transação encontrada</p>
           </div>
         ) : (
           <div className="space-y-3">
             {filteredTransactions.map((transaction) => (
               <div
                 key={transaction.id}
-                className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md dark:hover:bg-gray-700/50 transition-all"
               >
                 {/* Layout responsivo do cartão: coluna no mobile, linha no desktop */}
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
@@ -100,22 +97,21 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-bold ${
-                          transaction.tipo === 'entrada'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700'
-                        }`}
+                        className={`px-3 py-1 rounded-full text-xs font-bold ${transaction.tipo === 'entrada'
+                            ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                            : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                          }`}
                       >
                         {transaction.tipo === 'entrada' ? '📈 ENTRADA' : '📉 SAÍDA'}
                       </span>
-                      <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium capitalize">
+                      <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium capitalize">
                         {transaction.categoria}
                       </span>
                     </div>
-                    <h3 className="font-bold text-lg text-gray-800 mb-1">
+                    <h3 className="font-bold text-lg text-gray-800 dark:text-white mb-1 transition-colors">
                       {transaction.descricao}
                     </h3>
-                    <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                    <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 transition-colors">
                       <span>
                         📅{' '}
                         {new Date(transaction.data).toLocaleDateString('pt-BR', {
@@ -132,16 +128,15 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
                   <div className="flex items-center md:items-start justify-center md:justify-end gap-4 w-full md:w-auto">
                     <div className="text-center md:text-right">
                       <p
-                        className={`text-2xl font-bold ${
-                          transaction.tipo === 'entrada' ? 'text-green-600' : 'text-red-600'
-                        }`}
+                        className={`text-2xl font-bold ${transaction.tipo === 'entrada' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                          }`}
                       >
                         {transaction.tipo === 'entrada' ? '+' : '-'} {formatCurrency(transaction.valor)}
                       </p>
                     </div>
                     <button
                       onClick={() => handleDelete(transaction.id, transaction.descricao)}
-                      className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 p-2 rounded-lg transition-colors"
                       title="Excluir transação"
                     >
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -162,11 +157,11 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
 
         {/* Resumo */}
         {filteredTransactions.length > 0 && (
-          <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-green-50 p-4 rounded-lg">
-                <p className="text-sm text-green-700 font-medium">Total Entradas</p>
-                <p className="text-xl font-bold text-green-700">
+              <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg transition-colors">
+                <p className="text-sm text-green-700 dark:text-green-400 font-medium">Total Entradas</p>
+                <p className="text-xl font-bold text-green-700 dark:text-green-400">
                   {formatCurrency(
                     filteredTransactions
                       .filter((t) => t.tipo === 'entrada')
@@ -174,9 +169,9 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
                   )}
                 </p>
               </div>
-              <div className="bg-red-50 p-4 rounded-lg">
-                <p className="text-sm text-red-700 font-medium">Total Saídas</p>
-                <p className="text-xl font-bold text-red-700">
+              <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg transition-colors">
+                <p className="text-sm text-red-700 dark:text-red-400 font-medium">Total Saídas</p>
+                <p className="text-xl font-bold text-red-700 dark:text-red-400">
                   {formatCurrency(
                     filteredTransactions
                       .filter((t) => t.tipo === 'saida')
@@ -184,9 +179,9 @@ export function TransactionList({ transactions, onDelete }: TransactionListProps
                   )}
                 </p>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-sm text-blue-700 font-medium">Saldo</p>
-                <p className="text-xl font-bold text-blue-700">
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg transition-colors">
+                <p className="text-sm text-blue-700 dark:text-blue-400 font-medium">Saldo</p>
+                <p className="text-xl font-bold text-blue-700 dark:text-blue-400">
                   {formatCurrency(
                     filteredTransactions
                       .filter((t) => t.tipo === 'entrada')
